@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.zjh.shop.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="pers.zjh.shop.pojo.Order" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="orderCode" property="orderCode" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="user_message" property="user_message" jdbcType="VARCHAR" />
+    <result column="create_date" property="create_date" jdbcType="TIMESTAMP" />
+    <result column="pay_date" property="pay_date" jdbcType="TIMESTAMP" />
+    <result column="delivery_date" property="delivery_date" jdbcType="TIMESTAMP" />
+    <result column="confirm_date" property="confirm_date" jdbcType="TIMESTAMP" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!-- 条件查询订单-->
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderCode, address, receiver, mobile, user_message, create_date, pay_date, delivery_date, 
+    confirm_date, uid, status
+  </sql>
+
+  <!-- 条件查询订单-->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pers.zjh.shop.pojo.OrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from order_
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <!-- 根据主键id 查询订单-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from order_
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据主键删除订单-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from order_
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 插入订单-->
+  <insert id="insert" parameterType="pers.zjh.shop.pojo.Order" useGeneratedKeys="true" keyProperty="id" >
+    insert into order_ (orderCode, address, receiver, 
+      mobile, user_message, create_date, 
+      pay_date, delivery_date, confirm_date, 
+      uid, status)
+    values (#{orderCode,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{receiver,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{user_message,jdbcType=VARCHAR}, #{create_date,jdbcType=TIMESTAMP}, 
+      #{pay_date,jdbcType=TIMESTAMP}, #{delivery_date,jdbcType=TIMESTAMP}, #{confirm_date,jdbcType=TIMESTAMP}, 
+      #{uid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 选择性插入订单数据-->
+  <insert id="insertSelective" parameterType="pers.zjh.shop.pojo.Order" useGeneratedKeys="true" keyProperty="id" >
+    insert into order_
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        orderCode,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="receiver != null" >
+        receiver,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="user_message != null" >
+        user_message,
+      </if>
+      <if test="create_date != null" >
+        create_date,
+      </if>
+      <if test="pay_date != null" >
+        pay_date,
+      </if>
+      <if test="delivery_date != null" >
+        delivery_date,
+      </if>
+      <if test="confirm_date != null" >
+        confirm_date,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="user_message != null" >
+        #{user_message,jdbcType=VARCHAR},
+      </if>
+      <if test="create_date != null" >
+        #{create_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_date != null" >
+        #{pay_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delivery_date != null" >
+        #{delivery_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirm_date != null" >
+        #{confirm_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 更新订单数据-->
+  <update id="updateByPrimaryKeySelective" parameterType="pers.zjh.shop.pojo.Order" >
+    update order_
+    <set >
+      <if test="orderCode != null" >
+        orderCode = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="user_message != null" >
+        user_message = #{user_message,jdbcType=VARCHAR},
+      </if>
+      <if test="create_date != null" >
+        create_date = #{create_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pay_date != null" >
+        pay_date = #{pay_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delivery_date != null" >
+        delivery_date = #{delivery_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirm_date != null" >
+        confirm_date = #{confirm_date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 选择性更新订单数据-->
+  <update id="updateByPrimaryKey" parameterType="pers.zjh.shop.pojo.Order" >
+    update order_
+    set orderCode = #{orderCode,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      user_message = #{user_message,jdbcType=VARCHAR},
+      create_date = #{create_date,jdbcType=TIMESTAMP},
+      pay_date = #{pay_date,jdbcType=TIMESTAMP},
+      delivery_date = #{delivery_date,jdbcType=TIMESTAMP},
+      confirm_date = #{confirm_date,jdbcType=TIMESTAMP},
+      uid = #{uid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

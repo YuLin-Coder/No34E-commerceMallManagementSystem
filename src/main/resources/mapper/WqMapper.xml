@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.zjh.shop.mapper.WqMapper" >
+
+  <!--根据后台用户的名字，模糊查询-->
+  <select id="selectByProduct"  resultType="pers.zjh.shop.pojo.Product">
+    select * from product where name like '%${_parameter}%'
+  </select>
+</mapper>

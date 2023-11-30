@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.zjh.shop.mapper.CreditMapper" >
+  <resultMap id="BaseResultMap" type="pers.zjh.shop.pojo.Credit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, number, uid
+  </sql>
+
+  <!-- 条件查询积分-->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pers.zjh.shop.pojo.CreditExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from credit
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <!-- 根据主键id 查找积分-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from credit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据主键id 删除积分-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from credit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 添加积分-->
+  <insert id="insert" parameterType="pers.zjh.shop.pojo.Credit" useGeneratedKeys="true" keyProperty="id" >
+    insert into credit (name, number, uid
+      )
+    values (#{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <!-- 选择性添加积分-->
+  <insert id="insertSelective" parameterType="pers.zjh.shop.pojo.Credit" useGeneratedKeys="true" keyProperty="id" >
+    insert into credit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!--选择性更新积分-->
+  <update id="updateByPrimaryKeySelective" parameterType="pers.zjh.shop.pojo.Credit" >
+    update credit
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!--更新积分-->
+  <update id="updateByPrimaryKey" parameterType="pers.zjh.shop.pojo.Credit" >
+    update credit
+    set name = #{name,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

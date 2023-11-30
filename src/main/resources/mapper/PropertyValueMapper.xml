@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.zjh.shop.mapper.PropertyValueMapper" >
+  <resultMap id="BaseResultMap" type="pers.zjh.shop.pojo.PropertyValue" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="ptid" property="ptid" jdbcType="INTEGER" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, ptid, value
+  </sql>
+
+  <!-- 条件查询属性值-->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pers.zjh.shop.pojo.PropertyValueExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from property_value
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <!-- 根据主键id 查询属性值-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from property_value
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据主键id 删除属性值-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from property_value
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 添加属性值-->
+  <insert id="insert" parameterType="pers.zjh.shop.pojo.PropertyValue" useGeneratedKeys="true" keyProperty="id" >
+    insert into property_value (pid, ptid, value
+      )
+    values (#{pid,jdbcType=INTEGER}, #{ptid,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <!-- 选择性添加属性值-->
+  <insert id="insertSelective" parameterType="pers.zjh.shop.pojo.PropertyValue" useGeneratedKeys="true" keyProperty="id" >
+    insert into property_value
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="ptid != null" >
+        ptid,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="ptid != null" >
+        #{ptid,jdbcType=INTEGER},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 更新属性值-->
+  <update id="updateByPrimaryKeySelective" parameterType="pers.zjh.shop.pojo.PropertyValue" >
+    update property_value
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="ptid != null" >
+        ptid = #{ptid,jdbcType=INTEGER},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 选择性更新属性值-->
+  <update id="updateByPrimaryKey" parameterType="pers.zjh.shop.pojo.PropertyValue" >
+    update property_value
+    set pid = #{pid,jdbcType=INTEGER},
+      ptid = #{ptid,jdbcType=INTEGER},
+      value = #{value,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

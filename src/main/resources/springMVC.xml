@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--启动注解识别-->
+    <context:annotation-config/>
+    <!-- 自动扫描controller包下的所有类，使其成为springMVC的控制器 -->
+    <context:component-scan base-package="pers.zjh.shop.controller">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+    <mvc:annotation-driven />
+    <!--开通静态资源的访问-->
+    <mvc:default-servlet-handler />
+    <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 对上传文件的解析-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+    <mvc:interceptors>
+        <!-- 前端登录拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/fore/fore*"/>
+            <bean class="pers.zjh.shop.interceptor.ForeLoginInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/fore/fore*"/>
+            <bean class="pers.zjh.shop.interceptor.ForeShowInterceptor"/>
+        </mvc:interceptor>
+        <!-- 后台管理登录拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/*"/>
+            <mvc:mapping path="/category/*"/>
+            <mvc:mapping path="/credit/*"/>
+            <mvc:mapping path="/order/*"/>
+            <mvc:mapping path="/product/*"/>
+            <mvc:mapping path="/property/*"/>
+            <mvc:mapping path="/user/*"/>
+            <bean class="pers.zjh.shop.interceptor.AdminLoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

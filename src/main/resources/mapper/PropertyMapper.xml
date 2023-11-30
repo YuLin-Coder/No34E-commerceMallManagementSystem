@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pers.zjh.shop.mapper.PropertyMapper" >
+  <resultMap id="BaseResultMap" type="pers.zjh.shop.pojo.Property" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, cid, name
+  </sql>
+
+  <!-- 条件查询属性-->
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="pers.zjh.shop.pojo.PropertyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from property
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <!-- 根据主键id 查询属性-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from property
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!-- 根据主键id 删除属性-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from property
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <!-- 添加属性-->
+  <insert id="insert" parameterType="pers.zjh.shop.pojo.Property" useGeneratedKeys="true" keyProperty="id" >
+    insert into property (cid, name)
+    values (#{cid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 选择性添加属性-->
+  <insert id="insertSelective" parameterType="pers.zjh.shop.pojo.Property" useGeneratedKeys="true" keyProperty="id" >
+    insert into property
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 选择性更新属性-->
+  <update id="updateByPrimaryKeySelective" parameterType="pers.zjh.shop.pojo.Property" >
+    update property
+    <set >
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 更新属性-->
+  <update id="updateByPrimaryKey" parameterType="pers.zjh.shop.pojo.Property" >
+    update property
+    set cid = #{cid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
